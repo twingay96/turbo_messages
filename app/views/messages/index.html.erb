@@ -3,15 +3,14 @@
 <h1>Messages</h1>
 <div id ="new_message">
   <%= render partial: "messages/form" ,locals: {message: Message.new}%>
+  <%# form 측에 Message.new객체를 message라는 변수에 담아서 전달한다. %>
 </div>
 
 
 <div id="messages">
   <% @messages.each do |message| %>
     <%= render message %>
-    <p>
-      <%= link_to "Show this message", message %>
-    </p>
+
   <% end %>
 </div>
 

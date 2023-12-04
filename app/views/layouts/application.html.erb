@@ -12,6 +12,8 @@
   </head>
 
   <body>
+    <%# 전체페이지가 리프레쉬되면 시간도 바뀔 것 %>
+    <%= Time.zone.now %> 
     <%= yield %>
   </body>
 </html>

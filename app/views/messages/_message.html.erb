@@ -1,8 +1,13 @@
 <div id="<%= dom_id message %>">
+<%# dom_id message -> message_1,message_2,message_3.... 와 같이 각 div요소마다 고유한 id를 가지게 해준다%>
   <p>
     <strong>Body:</strong>
     <%= message.body %>
   </p>
-  <%= button_to "Destroy this message", @message, method: :delete %>
+  <p>
+    <%= link_to "Show this message", message %>
+  </p>
+  <%= button_to "Destroy this message", message, method: :delete %>
+ 
 
 </div>
