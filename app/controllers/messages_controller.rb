@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
     @message = Message.new
   end
 
-  # GET /messages/1/edit -> routes에서 Post로 임의로 수정함
+  # GET /messages/1/edit -> routes에서 Post로 임의로 수정했음
   def edit
     respond_to do |format|
       format.turbo_stream do 
