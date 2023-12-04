@@ -15,8 +15,15 @@ class MessagesController < ApplicationController
     @message = Message.new
   end
 
-  # GET /messages/1/edit
+  # GET /messages/1/edit -> routes에서 Post로 임의로 수정함
   def edit
+    respond_to do |format|
+      format.turbo_stream do 
+        render turbo_stream: [
+          turbo_stream.update(@message, partial: "messages/form", locals: {message: @message})
+        ]
+      end
+    end
   end
 
   # POST /messages or /messages.json
@@ -29,11 +36,11 @@ class MessagesController < ApplicationController
           render turbo_stream: [
             turbo_stream.update('new_message', partial: "messages/form" ,locals: {message: Message.new}),
             # update : 특정 요소를 바꿈
-            # new_message -> 터보스트림으로 바꿀 html요소(div id="new_message") , partial -> 바꾼 html 요소안에 넣을 템플릿 , locals-> 템플릿에 전달할 로컬변수(비어있는 폼)
+            # new_message -> 터보스트림으로 바꿀 html요소(div id="new_message") , partial -> 바꾼 html 요소안에 넣을 템플릿 , locals-> 템플릿(_form)에 전달할 로컬변수(비어있는 폼)
             # index 페이지에서 새로은 폼을 전부 작성하고 submit할경우 해당 폼을 비어있는 폼으로 다시 대체한다.
             turbo_stream.prepend('messages', partial: "messages/message" ,locals: {message: @message}),
             # prepend : 특정 요소의 맨위에 추가
-            # messages-> index 페이지의 html요소(div id="messages"), partial-> 추가할 위치에 넣을 템플릿, locals-> 템플릿에 전달할 변수(submit한객체)
+            # messages-> index 페이지의 html요소(div id="messages"), partial-> 추가할 위치에 넣을 템플릿, locals-> 템플릿(_message)에 전달할 변수(submit한객체)
 
           ]
         end
@@ -58,9 +65,19 @@ class MessagesController < ApplicationController
   def update
     respond_to do |format|
       if @message.update(message_params)
+          format.turbo_stream do 
+            render turbo_stream: [
+              turbo_stream.update(@message, partial: "messages/message", locals: {message: @message})
+            ] 
+          end
         format.html { redirect_to message_url(@message), notice: "Message was successfully updated." }
         format.json { render :show, status: :ok, location: @message }
       else
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@message, partial: "messages/form", locals: {message: @message})
+          ]
+        end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
