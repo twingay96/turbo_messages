@@ -2,7 +2,7 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  config.host= nil
+  #config.host= nil
   '''
   이 설정은 일반적으로 개발 환경에서 특정 호스트에 바인딩하지 않고 어떤 호스트에서든 서버를 실행할 수 있도록 허용하는 데 사용됩니다.
   config.host = nil로 설정하면 서버가 모든 호스트에 바인딩되어 외부에서도 접근 가능하게 됩니다.

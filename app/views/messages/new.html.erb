@@ -1,0 +1,10 @@
+<h1>New message</h1>
+
+<%= render "form", message: @message %>
+<%# new.html.erb의 @message 안에 있는 객체 정보를 _form.html.erb에 정의된 message 변수로 넘겨줌 %>
+
+<br>
+
+<div>
+  <%= link_to "Back to messages", messages_path %>
+</div>
