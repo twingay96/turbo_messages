@@ -1,24 +1,15 @@
-# README
+gem "turbo-rails", 를 gem file에 추가한 후, 
+bundle install 하기만 하면 링크 및 submit동작은 모두 ajax요청을 포함하게 됨  
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Turbo Streams는 전통적인 웹 애플리케이션의 동작 방식을 바꾸어, 페이지 전체를 새로고침하지 않고도 비동기적으로 UI를 업데이트할 수 있는 기술. 
+이를 통해 페이지 리로딩 없이 사용자 경험을 개선.
 
-Things you may want to cover:
+일반적으로 create, update, destroy와 같은 액션들에서는 전통적인 방식으로는 데이터를 처리하고나서 redirect_to를 통해 새로운 페이지로 이동하는 것이 일반적이지만,
+그러나 Turbo Streams를 사용하는 경우, 
+리다이렉트를 사용하지 않고도 액션이 완료된 후에도 현재 페이지의 일부분을 업데이트할 수 있습니다.
 
-* Ruby version
+Turbo Streams에서는 클라이언트에게 서버에서 생성된 Turbo Streams 명령을 통해 동적으로 화면을 업데이트할 것을 지시하게 됩니다. 
+이렇게 함으로써 전체 페이지를 다시 로딩하지 않고도 사용자 인터페이스를 업데이트할 수 있습니다.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+따라서, Turbo Streams를 사용하는 경우 리다이렉트가 필요하지 않을 수 있습니다. 
+대신에 서버에서는 Turbo Streams 명령을 생성하고, 클라이언트는 이 명령을 받아 해당 부분을 업데이트합니다.
