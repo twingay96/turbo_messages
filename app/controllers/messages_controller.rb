@@ -44,6 +44,7 @@ class MessagesController < ApplicationController
             turbo_stream.update('message_counter', html: Message.count),
             #turbo_stream.update('message_counter', html: "#{Message.count}"),
             # message_counter 요소를 Message.count를 html로 삽입하라.
+            turbo_stream.update('notice', "Message #{@message.id}created!!"),
           ]
         end
         format.html { redirect_to message_url(@message), notice: "Message was successfully created." }
@@ -69,7 +70,9 @@ class MessagesController < ApplicationController
       if @message.update(message_params)
           format.turbo_stream do 
             render turbo_stream: [
-              turbo_stream.update(@message, partial: "messages/message", locals: {message: @message})
+              turbo_stream.update(@message, partial: "messages/message", locals: {message: @message}),
+              turbo_stream.update('notice', "Message: #{@message.id} was updated!!"),
+
             ] 
           end
         format.html { redirect_to message_url(@message), notice: "Message was successfully updated." }
@@ -88,6 +91,7 @@ class MessagesController < ApplicationController
 
   # DELETE /messages/1 or /messages/1.json
   def destroy
+    deleted_message = @message.id
     @message.destroy
 
     respond_to do |format|
@@ -95,6 +99,7 @@ class MessagesController < ApplicationController
          render turbo_stream: [
           turbo_stream.remove(@message),
           turbo_stream.update('message_counter', html: Message.count),
+          turbo_stream.update('notice', "Message: #{deleted_message} was deleted!!"),
         ]
       end
       # format.turbo_stream { render turbo_stream: turbo_stream.remove("message_#{@message.id}") } 와 같은의미.
