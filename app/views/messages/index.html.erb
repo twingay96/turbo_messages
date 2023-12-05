@@ -1,6 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Messages</h1>
+<h1>
+  Messages
+  <span id="message_counter">
+    <%= Message.count %>
+  </span>
+</h1>
 <div id ="new_message">
   <%= render partial: "messages/form" ,locals: {message: Message.new}%>
   <%# form 측에 Message.new객체를 message라는 변수에 담아서 전달한다. %>

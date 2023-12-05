@@ -41,7 +41,9 @@ class MessagesController < ApplicationController
             turbo_stream.prepend('messages', partial: "messages/message" ,locals: {message: @message}),
             # prepend : 특정 요소의 맨위에 추가
             # messages-> index 페이지의 html요소(div id="messages"), partial-> 추가할 위치에 넣을 템플릿, locals-> 템플릿(_message)에 전달할 변수(submit한객체)
-
+            turbo_stream.update('message_counter', html: Message.count),
+            #turbo_stream.update('message_counter', html: "#{Message.count}"),
+            # message_counter 요소를 Message.count를 html로 삽입하라.
           ]
         end
         format.html { redirect_to message_url(@message), notice: "Message was successfully created." }
@@ -89,7 +91,12 @@ class MessagesController < ApplicationController
     @message.destroy
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@message) }
+      format.turbo_stream  do
+         render turbo_stream: [
+          turbo_stream.remove(@message),
+          turbo_stream.update('message_counter', html: Message.count),
+        ]
+      end
       # format.turbo_stream { render turbo_stream: turbo_stream.remove("message_#{@message.id}") } 와 같은의미.
       # Turbo Streams를 사용하여 해당 @message 객체에 대한 클라이언트측 HTML 엘리먼트을 동적으로 제거하라는 의미입니다.
       '''
