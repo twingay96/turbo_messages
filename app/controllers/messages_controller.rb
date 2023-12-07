@@ -1,9 +1,22 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ show edit update destroy ]
+  before_action :set_message, only: %i[ show edit update destroy]
 
   # GET /messages or /messages.json
   def index
     @messages = Message.order(created_at: :desc) # asc: 오름차순 
+    if params[:id] != nil
+      puts "파라미터넘어옴", params[:id]
+    end
+    respond_to do |format|
+      format.turbo_stream do
+        puts "터보로 응답함!"
+        render turbo_stream: [
+          turbo_stream.replace(dom_id(params[:id]), partial: "messages/message", locals: { message: @message })
+        ]
+      end
+      format.html { render :index }
+    end
+
   end
 
   # GET /messages/1 or /messages/1.json

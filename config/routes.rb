@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root "messages#index"
+  get "/messages/index" =>"messages#index" ,as: :turbo_index
+  
   '''
   get "/messages" => "messages#index"
   post "/messages" => "messages#create"
