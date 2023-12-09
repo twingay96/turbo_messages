@@ -1,8 +1,4 @@
 <%= form_with(model: message) do |form| %>
-<%# model: message->  객체정보를 변수 message로 넘겨받은것  %>
-<%# form_with(model: message) do |form| 에서 model: message 부분은 form 객체에게 해당 폼이 어떤 모델 객체에 대한 것인지 알려주는 역할을 합니다.  %>
-<%# 따라서 컨트롤러에서 locals: {message: @message}로 전달한 @message 객체가 폼에 할당되어 해당 폼의 입력 필드에 기존 정보를 채우게 됩니다. %>
-<%# 예를 들어, form.text_area :body는 @message.body 값을 text_area에 표시하는데 사용될 것입니다. 마찬가지로 form.submit은 해당 모델에 대한 업데이트 또는 새로운 작성을 처리할 것입니다. %>
   <% if message.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>
@@ -21,8 +17,20 @@
   </div>
 
   <div>
-    <% form.submit %>
+    <%= form.submit %>
     <%= link_to "Back (not turbo)", messages_path%>
-    <%= link_to "Back (use turbo)", turbo_index_path(id: message.id) %>
+
+    <% unless message.id.nil? %>
+        <%= button_to "cancel(turbo)", "/messages/#{message.id}/cancel", method: :post, remote: true %>
+        <%= button_to "cancel(turbo-use format)", cancel_message_path(message, format: :turbo_stream), method: :post, remote: true %>
+
+    <% end %>
+    <%# @message_object.body %>
+    <%#= link_to "cancel(turbo)", cancel_message_path(message), method: :post, remote: true %>
+
+    
   </div>
 <% end %>
+
+<%# button_to  "cancel(turbo)", cancel_message_path(@message) , method: :post ,remote: true%>
+

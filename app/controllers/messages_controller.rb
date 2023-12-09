@@ -1,22 +1,30 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ show edit update destroy]
+  before_action :set_message, only: %i[ show edit update destroy cancel]
 
   # GET /messages or /messages.json
   def index
     @messages = Message.order(created_at: :desc) # asc: 오름차순 
-    if params[:id] != nil
-      puts "파라미터넘어옴", params[:id]
-    end
+    # if params[:id] != nil
+    #   puts "파라미터넘어옴", params[:id]
+    # end
     respond_to do |format|
-      format.turbo_stream do
-        puts "터보로 응답함!"
-        render turbo_stream: [
-          turbo_stream.replace(dom_id(params[:id]), partial: "messages/message", locals: { message: @message })
-        ]
-      end
       format.html { render :index }
     end
-
+  end
+  def cancel
+    puts "모델객체 전달됨? :" ,@message, @message.body
+    #respond_to do |format|
+      # format.turbo_stream do
+      #   puts "터보로 응답함"
+      #   render turbo_stream: [
+      #     turbo_stream.replace(@message, partial: "messages/message", locals: {message: @message}),
+      #     turbo_stream.replace('notice', "Message: #{@message.id}'s edit was canceled by turbo!!"),
+      #   ]
+      # end
+      #format.html { redirect_to messages_path, notice: "edit was successfully cancelled by html." }
+    #end
+    render turbo_stream: turbo_stream.update(@message) { |m| m.reload }
+    
   end
 
   # GET /messages/1 or /messages/1.json
@@ -28,12 +36,16 @@ class MessagesController < ApplicationController
     @message = Message.new
   end
 
-  # GET /messages/1/edit -> routes에서 Post로 임의로 수정했음
+  # GET /messages/1/edit -> routes에서 Post로 임의로 추가했음
   def edit
+    puts "edit 동작", @message.id
+    @message_object = @message
     respond_to do |format|
       format.turbo_stream do 
+        puts "edit 요청에대한 turbo_stream응답 동작"
         render turbo_stream: [
-          turbo_stream.update(@message, partial: "messages/form", locals: {message: @message})
+          turbo_stream.update(@message, partial: "messages/form", locals: {message: @message, message_object: @message }),
+          
         ]
       end
     end
