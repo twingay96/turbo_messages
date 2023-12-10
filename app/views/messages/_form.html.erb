@@ -20,17 +20,13 @@
     <%= form.submit %>
     <%= link_to "Back (not turbo)", messages_path%>
 
-    <% unless message.id.nil? %>
-        <%= button_to "cancel(turbo)", "/messages/#{message.id}/cancel", method: :post, remote: true %>
-        <%= button_to "cancel(turbo-use format)", cancel_message_path(message, format: :turbo_stream), method: :post, remote: true %>
-
-    <% end %>
-    <%# @message_object.body %>
-    <%#= link_to "cancel(turbo)", cancel_message_path(message), method: :post, remote: true %>
-
     
   </div>
 <% end %>
-
-<%# button_to  "cancel(turbo)", cancel_message_path(@message) , method: :post ,remote: true%>
-
+<% unless message.id.nil? %>
+  <%= link_to "Cancel", message %>
+  <%= button_to "Back (use index action turbo)", cancel_index_path(message) , method: :post , remote: true%>
+  <%# index 액션에서 format.turbo_stream으로 응답 %>
+  <%= button_to "cancel(by pure url)", "/messages/#{message.id}/cancel", method: :post, remote: true %>
+  <%= button_to "cancel(use view_helper )", cancel_message_path(message), method: :post, remote: true %>
+<% end %>

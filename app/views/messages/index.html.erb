@@ -16,8 +16,9 @@
 
 <div id="messages">
   <% @messages.each do |message| %>
-    <%= render message %>
-
+    <div id="message_<%= message.id %>">
+      <%= render message %>
+    </div>
   <% end %>
 </div>
 

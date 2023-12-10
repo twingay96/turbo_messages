@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   root "messages#index"
-  #post "messages/:id/cancel" => "messages#cancel" ,as: :cancel_message
+  post "messages/:id/cancel" => "messages#cancel" ,as: :cancel_message
+  post "messages/:id/index" => "messages#index", as: :cancel_index
   resources :messages do
-    member do
-      post 'cancel'
-    end
+    # member do
+    #   post 'cancel'
+    # end
   end
 
   resources :messages do 
